@@ -5,7 +5,11 @@ const os = require('os');
 //Accept parsers
 server.use(restify.acceptParser(server.acceptable))
 server.use(restify.bodyParser())
-
+server.use(restify.CORS({
+  origins:['*'],
+  credentials:true,
+  headers:['x-foo']
+}))
 // Fake DB
 var courses = {
   '001':{
@@ -60,7 +64,7 @@ server.post('/courses/new', function(req, res, next){
   courses[String(totalCourses)] = req.params
   res.setHeader('content-type', 'application/json')
   res.writeHead(200)
-  res.end({success:'done'})
+  res.end(courses[String(totalCourses)])
   return next()
 })
 
